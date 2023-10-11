@@ -1,0 +1,172 @@
+[부트스트랩 - 리액트용 따로있음, 기존것도 사용가능]
+https://react-bootstrap.netlify.app/docs/getting-started/introduction 참조
+npm install react-bootstrap bootstrap
+
+기존꺼 쓰려면
+public의 index.html header에
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+  crossorigin="anonymous"
+/>
+
+[라우팅] react router dom (npm install react-router-dom@6) <- 6버전
+https://reactrouter.com/en/main
+
+컴포넌트 교체 식으로 페이지 변경을 보여줌
+주소/페이지명 으로 분리시킴
+
+- install
+npm install react-router-dom@6
+
+- setting!!!
+<index.js>
+import { BrowserRouter } from 'react-router-dom';
+
+root.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+
+- use
+import { Route, Routes } from 'react-router-dom';
+
+path : 보여줄 주소, element : 보여줄 페이지
+<Routes>
+  <Route path='/' element={<div>메인페이지</div>} />
+  <Route path='/detail' element={보여줄 컴포넌트} />
+</Routes>
+
+[useNavigate] 페이지 이동 관련 함수 내장
+navigate('/') <- main page로 이동시켜줌
+navigate(-1) 또는 1 : 이전페이지, 다음페이지
+
+## App.css -> App.js에만 쓰고싶을때 App.module.css 로 변경
+
+[JS로 만드는 CSS - styled-components]
+npm install styled-components  // 설치
+## https://styled-components.com/ 
+import { styled } from 'styled-components';
+const 컴포넌트이름 = styled.태그명`css 속성 설정`
+
+- 작성방법
+export를 붙이면 다른파일에서 쓸수있음(내보내기)
+또는 마지막에 export {Btn, CustomDiv}
+export const Btn = styled.button`
+  color:${props => (props.background === 'red') ? 'white' : 'blue'};  // 함수이므로 식가능
+  background : ${ props => props.background };   // props로 받을수 있음(람다식임)
+  font-size:30px;
+  border:1px solid blue;
+`
+// Btn에서 추가하고싶다면
+const NewBtn = styled(Btn)`
+  height : 250px;
+  width : 300px
+`
+const CustomDiv = styled.div`
+  background:skyblue;
+  padding:20px;
+  border:1px solid red;
+`
+
+- 사용방법 : 기존 태그 쓰듯이 쓰면됨!
+<CustomDiv>test입니다.
+  <Btn background={'yellow'}>styled component</Btn>
+  <Btn background={'red'}>styled component</Btn>
+  <NewBtn background={'red'}>styled component</NewBtn>
+</CustomDiv>
+
+[컴포넌트의 생명주기]
+mount -> rerendering(update) -> unmount (주기별로 추가작업이 가능함)
+
+[useEffect]
+mount, update 될때 실행됨, 여러개 만들 수 있음
+html코드들이 다 랜더링된 후에 useEffect가 작동됨(마지막)
+# 시간이 오래걸리는 작업인데 중요하지 않은 작업 
+# 페이지에 특별히 쓰지 않는 코드
+# 화면에 꼭 필요한 작업은 안됨
+# setTimeout, setInterval 등등 : 화면이 뜨고나서 작동되야하므로
+
+useEffect(()=> {
+}, []) // []: 의존성 배열 : useState들을 넣어주며, 해당 State가 작동됬을때만 실행되도록함
+[] : 마운트 때 작동(1번)
+[state] : 마운트, 해당 State가 update 됐을때만
+[] 생략 : 매번작동 마운트+update
+
+# 랜더링이 되다가 작업이 취소되야 하는경우가 있음
+useEffect 작업중 화면이동 등의 경우
+[clean up function]을 사용함
+useEffect 안에 작성됨
+
+useEffect(()=> {
+  실행코드
+
+  // [clean up function]
+  return () => {
+    실행코드의 취소할 코드, 메서드 등
+    ex) setTimeout + clearTimeout / setInteval + clearInterval
+  }
+}, [])
+
+- 작동순서 : 
+mount 때 클린업함수는 실행안됨
+update 때 클린업함수 작동 후 코드작동
+unmount 때 실행됨
+
+# 타이머 실행전에 클린업이 실행되므로 타이머를 계속 실행시키지 않음
+useEffect(()=> {
+  // alert div를 5초뒤에 없앰
+  let timer = setTimeout(()=> {
+    setShow(false);
+    // clearTimeout();
+    console.log('useEffect')
+  } , 3000)
+  
+  // [clean up function] : 기존작업 중지 코드들이 들어감, unmount 때도 작동됨
+  return () => {
+    clearTimeout(timer);  // 기존타이머 사라짐
+  }
+}, [num])  // 마운트, num state변경(리랜더링) 시
+
+[서버요청]
+1. XML HttpRequest
+2. fetch
+3. JQuery
+Ajax : 페이지 새로고침없이 데이터 통신방식
+4. axios : 리액트에서 사용
+npm install axios
+
+- 작성방법
+import axios from 'axios';
+axios.get/post(url)
+  .then((response)=> {
+    응답데이터로 처리
+  })
+  .catch((error)=> { 에러 코드 })
+
+ex)
+<button onClick={()=> {
+  axios.get('https://raw.githubusercontent.com/Naessss/study/main/fru.json')
+    .then( (result)=> {
+      console.log(result.data);
+    })
+    .catch( (error)=> {
+      console.log(error);
+    })
+}}>axios 서버요청</button>
+<button onClick={()=> {
+  fetch('https://raw.githubusercontent.com/Naessss/study/main/fru.json')
+    .then( (response)=> {
+      return response.json();
+    })
+    .then( (result)=> {
+      console.log(result);
+    })
+    .catch( (error)=> {
+      console.log(error);
+    })
+  }}
+>fetch 서버요청</button>
+

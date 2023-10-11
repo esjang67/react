@@ -1,0 +1,113 @@
+## 같은 state 작업은 마지막 작업만 작동되고 랜더링됨
+TabContent.js 참조 useEffect에서 setTimeout을 넣음
+
+[Redux tool kit] 
+형제끼리 등 부모->자식 외에는 state를 공유할수 없으므로
+여러 컴포넌트에서 state를 가져올 수 있도록함
+
+-install
+npm install @reduxjs/toolkit react-redux
+
+- 기본셋팅
+state 관리파일 새로 만들어야함
+1. 폴더생성 redux / store.js (컴포넌트가 아니므로 소문자)
+2. index.js
+import { Provider } from 'react-redux';
+import store from './redux/store';
+
+root.render(
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
+);
+
+
+- 파일 기본 작성
+import { configureStore } from "@reduxjs/toolkit";
+
+export default configureStore({
+  reducer : {
+  
+  }
+})
+
+- test : store.js, Cart.js 참조!
+import { changeNumber } from "../redux/store";
+import { changeGender, setAge } from "../redux/infoSlice";
+
+
+// [useSelector] redux 사용하기 매개변수 state는 store에서 저장한 내용들을 가져오기(모두가져옴)
+  // const {test, item, cart} = useSelector((state)=> {
+  //   return state;
+  // })
+  // console.log(test);
+  // console.log(item);
+
+  const cart = useSelector((state) => state.cart);
+
+  // redux state 값 변경 테스트
+  const number = useSelector((state)=> state.number);
+
+  // [useDispatch] : redux에서 만든 store에 선언한 함수를 가져올 수 있음
+  const dispatch = useDispatch();
+
+  const info = useSelector(state => state.info);
+
+  {info.name}{info.age}{info.gender}
+  {number}
+  <button onClick={()=> {
+    dispatch(changeNumber(10));
+    dispatch(setAge());
+    dispatch(changeGender());
+  }}>버튼</button> 
+
+
+[React-Query : https://tanstack.com/]
+실시간 데이터(sns, 주식 등)를 받아올때
+
+-install
+npm install @tanstack/react-query
+
+- index.js
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+const queryClient = new QueryClient();
+root.render(
+  <QueryClientProvider client={queryClient}>      <---------
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </QueryClientProvider>
+);
+
+- 사용법
+import { useQuery } from '@tanstack/react-query';
+const 결과저장변수 = useQuery(['쿼리명'], ()=> {
+  return 서버요청코드(axios 등)
+})
+
+- 상태(결과저장변수 안에 저장됨)
+.isLoading
+.error
+.data
+
+## 서버에 요청을 자주 날려서 값을 가져옴(웹사이트 활성화할때)
+## 요청이 실패하면 재요청을 알아서 함(몇번하고 오류시 오류표시함)
+## 중복요청시 최근데이터로 표시됨
+
+<최적화 기법들>
+[lazy import] App.js 참고
+
+[Memoization] Cart.js 참조
+랜더링할떄 필요없는 랜더링을 막음
+(마운트때만, 연결된 props가 수정되면 랜더링됨)
+export default meme(컴포넌트);
+
+[useMemo] Cart.js 참조
+시간이 오래걸리는 함수, 기능은 랜더링때마다 할수 없으므로
+한번 계산해두고 변경되지 않으면 랜더링 시키지 않음
+
+

@@ -1,0 +1,58 @@
+.App .main-bg {
+  height: 300px;
+  /* background-image: url('./bg.jpg'); */
+  background-size: cover;
+  background-position: center;
+}
+
+.start {
+  opacity: 0;
+}
+.end {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+/* 최근본상품 관련 CSS */
+.App {
+  position: relative;
+}
+.recent-container {
+  max-width: 120px;
+  margin: 0 auto;
+  padding: 5px;
+  
+  position: fixed;
+  right: 5px;  
+  top: 200px;
+}
+
+.cards {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 5px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.card p, .cards p {
+  margin: 0;
+}
+.cards > p {
+  color: white;
+}

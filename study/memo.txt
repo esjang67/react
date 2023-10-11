@@ -1,0 +1,167 @@
+[컴포넌트 Component]
+App.js의 function App() 형식
+컴포넌트 안에 컴포넌트를 넣을 수 없음.
+주로 하나의 파일에는 한개의 컴포넌트만 작성됨
+컴포넌트 이름의 첫글자는 대문자(구분용)
+컴포넌트 안에는 한개의 구역만 입력 가능함
+작업단위별로 작성됨
+
+- 기본형식
+function Header(){
+  return (
+    //작업할 html(JSX영역)
+    <header>
+      <h1>Header 영역</h1>
+    </header>
+    );
+}
+
+또는
+
+const Header = () => {
+  return (
+    //작업할 html
+    <header>
+      <h1>Header 영역</h1>
+    </header>
+    );
+}
+
+- 사용방법
+App 컴포넌트 안에 입력하면됨(index.js의 root.render에 <App />가 실행시켜줌)
+function App() {
+  return (
+    <div className="App">
+      <Header></Header>   // <--------- 여기입력됨 <Header /> 로 줄여쓸수있음
+      <h1>hello</h1>
+    </div>
+  );
+}
+
+- 파일을 새로 만들었을때
+1. 파일을 내보내기 위한 작업
+파일의 마지막에 입력(다른파일에서 가져올수 있도록 입력함)
+export default 컴포넌트명;
+
+2. 가져올 파일에서는 import해야함
+import Footer from './Footer.js'; // .js 생략가능 // Footer는 사용할 이름 
+
+[JSX] - Java Sctript XML   Body.js 참고
+HTML, JAVA SCREIPT 일부
+열기태그 + 닫기태그(닫기 꼭 있어야함)
+최상위 태그는 1개만 있어야함
+<></> 로 최상위 태그를 만들 수도 있음(스타일때문에 div 등을 넣을 수 없을때)
+<></> == <Fragment></Fragment> (import해야함!!!)
+
+[css 설정방법]
+1. .js에서 html에 직접입력시
+<div style={{ fontSize : '20px', backgroundColor: 'skyblue' }}>
+font-size가 fontSize 형식으로 바뀜
+
+2. .css 파일을 만들기
+사용할 파일에서 import './Body.css'; 해야함
+import한 파일만 적용하는 것이 아님! 전체적용됨
+각 class를 지정하면 되는데 여기서는 className으로 입력할것!
+ex) <div className='body'>
+
+[Props] App.js 참고(App, Header 컴포넌트)
+컴포넌트의 값, 변수 등 모든것을 전달하는 객체 
+## 데이터 흐름이 단방향 (부모에서 직계 자식으로만 보낼 수 있음)
+
+- Props 보내고 받기
+보내주는 법 : <컴포넌트 보낼이름 = {보낼값} /> 
+             ex) <Header name = {name} age = {age} />
+
+받는 법 : 받는 컴포넌트의 매개변수로 받음 object형식으로 전달됨
+function Header(props){     // <-- props는 변수이름이며 주로 props로 작성함
+  console.log(props);       // object 로 출력함 확인!
+  console.log(props.name);  // 보낼이름의 값으로 조회함
+  return (
+    //작업할 html
+    <header>
+      <h1>Header 영역</h1>
+      <h4>{props.name}</h4>
+    </header>
+    );
+}
+
+# Header 컴포넌트에 Body 컴포넌트를 보낼때
+<Header>
+  <Body />
+</Header>
+
+- 기본값 설정:
+Header.defaultProps = {
+  number : 100
+};
+
+[구조분해할당 - js와 동일]
+let [a, b] = [10, 20];
+==> a = 10, b = 20 이 출력
+obj {
+  name:'홍길동',
+  age:20
+}
+let {name, age} = obj;    --> obj의 변수명과 같아야함
+
+ex) props로 꼭 받아야 하는것은 아님!
+function Header({person, name}){    // { } 꼭!!!!
+  console.log(person); 
+  console.log(name);
+  return (
+    //작업할 html
+    <header>
+      <h1>Header 영역</h1>
+      <h4>{name}</h4>
+      <h4>{person.name}</h4>
+    </header>
+    );
+}
+
+[Event] Event.js 참조
+- App.js
+function App() {
+  const clickEvent = () => {
+    alert('app함수');
+  }
+
+  return (
+    <div className="App">
+      <Event clickEvent={clickEvent}/>
+    </div>
+  );
+}
+
+- Event.js
+// App에서 만든 함수실행 방법1
+function Event(props) {
+   return (
+    <div>
+       <button onClick={props.clickEvent}>App에서 만든 함수실행</button>
+    </div>
+  );
+}
+
+// App에서 만든 함수실행 방법2
+function Event({clickEvent}) {
+   return (
+    <div>
+       <button onClick={clickEvent}>App에서 만든 함수실행</button>
+    </div>
+  );
+}
+
+[React Hook] - 리액트에 내장되어진 함수
+ex) useXXX
+- [State] TestState.js 참조
+기존 let, const 과 같은 변수이지만, 동적변수로 데이터가 변경되면 변경된 자신의 컴포넌트를 랜더링시킴
+부모컴포넌트는 재랜더링 되지 않음. 
+자식컴포넌트는 재랜더링 됨!
+                                             [초기값, 값변경함수]
+선언방법: const/let [변수명, state변경함수명] = useState(초기값);
+import useState 필요함!
+
+#state 연습 Prac.js 참조
+
+
+

@@ -1,0 +1,39 @@
+@font-face {
+  font-family: 'EF_hyunydororong';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/EF_hyunydororong.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@import url('https://fonts.googleapis.com/css2?family=Dongle&display=swap');
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: 'Dongle', 'EF_hyunydororong', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  background: #f6f6f6;
+  display: flex;
+  justify-content: center;
+  /* font-family: 'Dongle', sans-serif; */
+}
+
+#root {
+  margin: 0 auto;
+  max-width: 600px;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  background: white;
+  box-shadow: rgba(100, 100, 100, 0.2) 0px 7px 29px 0px;
+}

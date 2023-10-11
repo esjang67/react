@@ -1,0 +1,21 @@
+LT_P_DGMUSEUMART.101
+LT_P_DGMUSEUMART.1
+
+속성명	단일검색*	샘플데이터	설명
+mus_nam	N	관세박물관	시설명
+mus_typ	N	국립		박물관미술관구분
+new_adr	N	서울특별시 강남구 언주로 721	소재지도로명주소
+opr_tel	N	02-510-1082	운영기관전화번호
+opr_nam	N	관세박물관	운영기관명
+wds_tme	N	09:30		평일관람시작시각
+wde_tme	N	18:00		평일관람종료시각
+hds_tme	N	0:00		공휴일관람시작시각
+hde_tme	N	0:00		공휴일관람종료시각
+hdy_inf	N	공휴일		휴관정보
+adt_fee	N	0		어른관람료
+yot_fee	N	0		청소년관람료
+chd_fee	N	0		어린이관람료
+mng_tel	N	02-510-1082	관리기관전화번호
+mng_nam	N	서울특별시 강남구청	관리기관명
+reg_dat	N	2017-04-17	데이터기준일자
+ag_geom	N	POINT(...)	GEOMETRY 데이터
